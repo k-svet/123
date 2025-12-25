@@ -3,104 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Тексты по Enter</title>
+  <title>Тексты + картинка</title>
   <style>
     html, body {
       height: 100%;
       margin: 0;
-      background: #000;
-      color: #fff;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: #fff;
     }
+
+    /* ФОН НА ВЕСЬ ЭКРАН */
     body {
+      background-image: url("https://onlinetkani.ru/image/catalog/!-Sokol/Pajetki/pajetki-0016.JPG");
+      background-size: cover;        /* растянуть с сохранением пропорций */
+      background-position: center;   /* по центру */
+      background-repeat: no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       outline: none;
     }
-    #text {
-      font-size: 52px;
-      padding: 40px;
-      line-height: 1.25;
-    }
-    #hint {
+
+    /* Лёгкое затемнение, чтобы текст читался */
+    body::before {
+      content: "";
       position: fixed;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 14px;
-      opacity: 0.65;
-    }
-  </style>
-</head>
-<body tabindex="0">
-
-  <div id="text"></div>
-  <div id="hint"></div>
-
-  <script>
-    // Экраны (без цифр — они не часть текста)
-    const screens = [
-      "В 2025 русская очередь была клёвой",
-      "охуенной",
-      "пиздатой",
-      "обработала 10000000 тикетов",
-      "провела 50000 рефандов по качеству",
-      "и 1000 раз дёрнулась глазом",
-      "Спасибо за внимание ✨"
-    ];
-
-    let index = 0;
-
-    const textEl = document.getElementById("text");
-    const hintEl = document.getElementById("hint");
-    const bodyEl = document.body;
-
-    function show() {
-      textEl.textContent = screens[index];
-
-      if (index < screens.length - 1) {
-        hintEl.textContent = "Нажми Enter или кликни";
-      } else {
-        hintEl.textContent = "Нажми Enter или кликни, чтобы начать заново";
-      }
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: -1;
     }
 
-    function next() {
-      if (index < screens.length - 1) {
-        index++;
-      } else {
-        // если это прощальный экран — начинаем сначала
-        index = 0;
-      }
-      show();
-    }
-
-    function onKey(e) {
-      const isEnter =
-        e.key === "Enter" ||
-        e.code === "Enter" ||
-        e.code === "NumpadEnter";
-
-      if (isEnter) {
-        e.preventDefault();
-        next();
-      }
-    }
-
-    window.addEventListener("keydown", onKey);
-
-    bodyEl.addEventListener("click", () => {
-      bodyEl.focus();
-      next();
-    });
-
-    // старт
-    show();
-    bodyEl.focus();
-  </script>
-
-</body>
-</html>
+    .wrap
