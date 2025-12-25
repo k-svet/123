@@ -12,12 +12,15 @@
       color: #fff;
     }
 
-    /* ФОН НА ВЕСЬ ЭКРАН */
+    /* ФОН + ЗАТЕМНЕНИЕ БЕЗ ПСЕВДОЭЛЕМЕНТОВ (НАДЁЖНО) */
     body {
-      background-image: url("https://onlinetkani.ru/image/catalog/!-Sokol/Pajetki/pajetki-0016.JPG");
-      background-size: cover;        /* растянуть с сохранением пропорций */
-      background-position: center;   /* по центру */
+      background:
+        linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+        url("https://onlinetkani.ru/image/catalog/!-Sokol/Pajetki/pajetki-0016.JPG");
+      background-size: cover;
+      background-position: center;
       background-repeat: no-repeat;
+
       display: flex;
       align-items: center;
       justify-content: center;
@@ -25,13 +28,220 @@
       outline: none;
     }
 
-    /* Лёгкое затемнение, чтобы текст читался */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      z-index: -1;
+    .wrap {
+      padding: 40px;
+      max-width: 1100px;
+      width: 100%;
     }
 
-    .wrap
+    #text {
+      font-size: 52px;
+      line-height: 1.25;
+      margin-bottom: 24px;
+      /* чуть усилим читаемость */
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    #img {
+      display: none;
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      margin: 0 auto;
+    }
+
+    #hint {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.75;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    /* Экран пароля */
+    .gate {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0,0,0,0.55);
+    }
+
+    .gate-card {
+      width: min(520px, 92vw);
+      padding: 26px 22px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.55);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .gate-title {
+      font-size: 22px;
+      margin: 0 0 14px;
+      opacity: 0.95;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    .gate-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .gate-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+
+    .gate-btn {
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+
+    .gate-btn:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    .gate-error {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ffb3b3;
+      min-height: 18px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+  </style>
+</head>
+
+<body tabindex="0">
+
+  <!-- Основной контент -->
+  <div class="wrap" id="app" style="display:none;">
+    <div id="text"></div>
+    <img id="img" alt="">
+  </div>
+  <div id="hint" style="display:none;"></div>
+
+  <!-- Экран пароля -->
+  <div class="gate" id="gate">
+    <div class="gate-card">
+      <h1 class="gate-title">Введите пароль</h1>
+      <input id="pass" class="gate-input" type="password" placeholder="Пароль">
+      <div class="gate-row">
+        <button id="enterBtn" class="gate-btn">Войти</button>
+      </div>
+      <div id="err" class="gate-error"></div>
+      <div style="margin-top:10px; font-size:12px; opacity:.7;">Enter тоже работает</div>
+    </div>
+  </div>
+
+  <script>
+    const PASSWORD = "queue2025";
+
+    const screens = [
+      { text: "В 2025 русская очередь была клёвой" },
+      { text: "охуенной" },
+      { text: "пиздатой" },
+      { text: "обработала 10000000 тикетов" },
+      { text: "провела 50000 рефандов по качеству" },
+      { text: "и 1000 раз дёрнулась глазом" },
+      {
+        text: "Спасибо за внимание ✨",
+        image: "https://img.joomcdn.net/7cdf752bfa424a1bc94a9e8f85c30456b28e632c_original.jpeg"
+      }
+    ];
+
+    let index = 0;
+    let unlocked = false;
+
+    const textEl = document.getElementById("text");
+    const imgEl = document.getElementById("img");
+    const hintEl = document.getElementById("hint");
+    const bodyEl = document.body;
+
+    const gateEl = document.getElementById("gate");
+    const appEl = document.getElementById("app");
+    const passEl = document.getElementById("pass");
+    const errEl = document.getElementById("err");
+    const enterBtn = document.getElementById("enterBtn");
+
+    function show() {
+      const s = screens[index];
+      textEl.textContent = s.text;
+
+      if (s.image) {
+        imgEl.src = s.image;
+        imgEl.style.display = "block";
+      } else {
+        imgEl.removeAttribute("src");
+        imgEl.style.display = "none";
+      }
+
+      hintEl.textContent =
+        index < screens.length - 1
+          ? "Нажми Enter или кликни"
+          : "Нажми Enter или кликни, чтобы начать заново";
+    }
+
+    function next() {
+      if (!unlocked) return;
+      index = (index < screens.length - 1) ? index + 1 : 0;
+      show();
+    }
+
+    function unlock() {
+      if (passEl.value === PASSWORD) {
+        unlocked = true;
+        gateEl.style.display = "none";
+        appEl.style.display = "block";
+        hintEl.style.display = "block";
+        errEl.textContent = "";
+        index = 0;
+        show();
+        bodyEl.focus();
+      } else {
+        errEl.textContent = "Неверный пароль";
+        passEl.select();
+      }
+    }
+
+    enterBtn.addEventListener("click", unlock);
+    passEl.addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); unlock(); }
+    });
+
+    window.addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); next(); }
+    });
+
+    bodyEl.addEventListener("click", () => {
+      bodyEl.focus();
+      next();
+    });
+
+    passEl.focus();
+  </script>
+
+</body>
+</html>
