@@ -30,6 +30,7 @@
       overflow: hidden;
     }
 
+    /* ПЕРЕВЁРНУТЫЙ ФОН + ЗАТЕМНЕНИЕ (крутится только фон) */
     body::before{
       content:"";
       position: fixed;
@@ -61,6 +62,7 @@
       white-space: pre-wrap;
     }
 
+    /* Обычная картинка снизу текста */
     #img {
       display: none;
       object-fit: cover;
@@ -69,6 +71,7 @@
       margin: 0 auto;
     }
 
+    /* Фоллбек если картинка не грузится */
     #imgFallback {
       display: none;
       margin-top: 12px;
@@ -78,6 +81,31 @@
     }
     #imgFallback a { color: #fff; }
 
+    /* Слайд 30: котики ОДНИМ РЯДОМ ПОД ТЕКСТОМ */
+    #catsInline {
+      display: none;
+      width: 100%;
+      margin-top: 14px;          /* именно под текстом */
+      justify-content: flex-start; /* слева */
+      align-items: flex-start;
+      gap: 22px;
+      flex-wrap: nowrap;         /* одной линией */
+      overflow: visible;
+    }
+    .cat {
+      display: none;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.2);
+      flex: 0 0 auto;
+    }
+    #cat1 { width: 300px; height: 300px; }
+    #cat2 { width: 400px; height: 400px; }
+    #cat3 { width: 500px; height: 500px; }
+
+    /* Спец-слайд 18: board */
     #board {
       display: none;
       width: min(1200px, 96vw);
@@ -135,29 +163,7 @@
     .ukraine { margin-left: 140px; margin-top: 18px; }
     .moldova { margin-left: 280px; margin-top: 18px; }
 
-    #cats {
-      display: none;
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-    }
-    .cat {
-      position: absolute;
-      display: none;
-      object-fit: cover;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.2);
-    }
-    /* 1) левый нижний угол */
-    #cat1 { left: 18px; bottom: 18px; width: 300px; height: 300px; }
-    /* 2) по центру, правее первой */
-    #cat2 { left: 52%; top: 48%; transform: translate(-50%, -50%); width: 400px; height: 400px; }
-    /* 3) правее второй */
-    #cat3 { left: 78%; top: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px; }
-
+    /* Фуллскрин картинка (последний слайд) */
     #full {
       display: none;
       position: fixed;
@@ -184,6 +190,7 @@
       z-index: 3;
     }
 
+    /* Экран пароля */
     .gate {
       position: fixed;
       inset: 0;
@@ -259,18 +266,21 @@
 
 <body tabindex="0">
 
+  <!-- финальная фуллскрин картинка -->
   <div id="full">
     <img id="fullImg" alt="">
   </div>
 
-  <div id="cats">
-    <img id="cat1" class="cat" alt="">
-    <img id="cat2" class="cat" alt="">
-    <img id="cat3" class="cat" alt="">
-  </div>
-
+  <!-- Основной контент -->
   <div class="wrap" id="app" style="display:none;">
     <div id="text"></div>
+
+    <!-- котики под текстом (только слайд 30) -->
+    <div id="catsInline">
+      <img id="cat1" class="cat" alt="">
+      <img id="cat2" class="cat" alt="">
+      <img id="cat3" class="cat" alt="">
+    </div>
 
     <img id="img" alt="">
     <div id="imgFallback"></div>
@@ -334,6 +344,7 @@
 
   <div id="hint" style="display:none;"></div>
 
+  <!-- Экран пароля -->
   <div class="gate" id="gate">
     <div class="gate-card">
       <h1 class="gate-title">Введите пароль</h1>
@@ -349,12 +360,12 @@
   <script>
     const PASSWORD = "nikitochka";
 
-    // котики для слайда 30 (НОВЫЕ ССЫЛКИ)
+    // Слайд 30 — НОВЫЕ КАРТИНКИ
     const CAT1_URL = "https://st.peopletalk.ru/wp-content/uploads/2023/10/9cdf0da2e32dfe294624c8133f1261da-1536x1152.jpg";
     const CAT2_URL = "https://www.meme-arsenal.com/memes/85bafce6e31224208d207e2b8f5334e0.jpg";
     const CAT3_URL = "https://www.meme-arsenal.com/memes/8c1c72ad4433bbd78c8d3189ee070767.jpg";
 
-    // старые котики/картинки для других слайдов
+    // Для остальных слайдов (как было)
     const CAT_A = "https://i.pinimg.com/236x/2b/39/10/2b3910477a915bff0f27ec06b0056442.jpg";
     const CAT_B = "https://img.freepik.com/free-vector/simple-vibing-cat-square-meme_742173-4493.jpg?semt=ais_hybrid&w=740&q=80";
     const CAT_C = "https://i.pinimg.com/736x/17/27/9a/17279ae8fc2e00b89f0e2e0405613cc3.jpg";
@@ -424,13 +435,14 @@
       { text: "Мы запустили самостоятельный поиск заказов, благодаря чему у нас стало в 4 раза меньше тикетов по верификации (47к за первые полгода и 12к за вторые). А потом запустили рефанды баллами и теперь 15% рефандов проводим именно так." },
       { text: "Агенты на UGC-модерации ещё один год смотрели на всякое безобразие в течение 144 часов и разметили 28 491 единицу контента. И там показывали ни разу не котиков, ни разу" },
 
+      /* СЛАЙД 30 — котики ОДНИМ РЯДОМ ПОД ТЕКСТОМ */
       {
-        kind: "cats",
+        kind: "cats_inline",
         text: "Кстати о котиках",
         cats: [
-          { src: CAT1_URL, w: 300, h: 300, target: "cat1", delayMs: 2000 },
-          { src: CAT2_URL, w: 400, h: 400, target: "cat2", delayMs: 4000 },
-          { src: CAT3_URL, w: 500, h: 500, target: "cat3", delayMs: 6000 }
+          { src: CAT1_URL, target: "cat1", delayMs: 2000 },
+          { src: CAT2_URL, target: "cat2", delayMs: 4000 },
+          { src: CAT3_URL, target: "cat3", delayMs: 6000 }
         ]
       },
 
@@ -461,30 +473,30 @@
     const errEl = document.getElementById("err");
     const enterBtn = document.getElementById("enterBtn");
 
-    const catsLayer = document.getElementById("cats");
+    const fullEl = document.getElementById("full");
+    const fullImg = document.getElementById("fullImg");
+
+    const catsInlineEl = document.getElementById("catsInline");
     const cat1 = document.getElementById("cat1");
     const cat2 = document.getElementById("cat2");
     const cat3 = document.getElementById("cat3");
-
-    const fullEl = document.getElementById("full");
-    const fullImg = document.getElementById("fullImg");
 
     function clearTimers() {
       for (const t of timers) clearTimeout(t);
       timers = [];
     }
 
-    function hideCats() {
-      catsLayer.style.display = "none";
+    function hideFull() {
+      fullEl.style.display = "none";
+      fullImg.removeAttribute("src");
+    }
+
+    function hideCatsInline() {
+      catsInlineEl.style.display = "none";
       for (const el of [cat1, cat2, cat3]) {
         el.style.display = "none";
         el.removeAttribute("src");
       }
-    }
-
-    function hideFull() {
-      fullEl.style.display = "none";
-      fullImg.removeAttribute("src");
     }
 
     function resetMedia() {
@@ -494,6 +506,7 @@
       imgFallbackEl.style.display = "none";
       imgFallbackEl.innerHTML = "";
       boardEl.style.display = "none";
+      hideCatsInline();
     }
 
     function setBoard(board) {
@@ -521,7 +534,6 @@
 
     function show() {
       clearTimers();
-      hideCats();
       hideFull();
       resetMedia();
 
@@ -535,17 +547,15 @@
         textEl.textContent = s.title;
         boardEl.style.display = "block";
         setBoard(s.board);
-      } else if (s.kind === "cats") {
+      } else if (s.kind === "cats_inline") {
         textEl.textContent = s.text;
-        catsLayer.style.display = "block";
 
+        catsInlineEl.style.display = "flex";
+        // Скрыты по умолчанию, включаем по таймерам
         for (const c of s.cats) {
           const el = document.getElementById(c.target);
-          el.style.width = c.w + "px";
-          el.style.height = c.h + "px";
           el.src = c.src;
           el.style.display = "none";
-
           timers.push(setTimeout(() => {
             el.style.display = "block";
           }, c.delayMs));
@@ -603,12 +613,14 @@
       }
     }
 
+    // Вход
     enterBtn.addEventListener("click", unlock);
     passEl.addEventListener("keydown", (e) => {
       const isEnter = e.key === "Enter" || e.code === "Enter" || e.code === "NumpadEnter";
       if (isEnter) { e.preventDefault(); unlock(); }
     });
 
+    // Навигация (только после входа)
     window.addEventListener("keydown", (e) => {
       if (!unlocked) return;
 
@@ -627,12 +639,14 @@
       if (isPrev) { e.preventDefault(); prev(); }
     });
 
+    // Клик — вперёд
     bodyEl.addEventListener("click", () => {
       if (!unlocked) return;
       bodyEl.focus();
       next();
     });
 
+    // Фокус сразу в поле пароля
     passEl.focus();
   </script>
 
