@@ -81,18 +81,22 @@
     }
     #imgFallback a { color: #fff; }
 
-    /* Слайд 30: котики ОДНИМ РЯДОМ ПОД ТЕКСТОМ */
-    #catsInline {
+    /* Слайд 30: котики ОДНИМ РЯДОМ ПОД ТЕКСТОМ + автоскейл чтобы влезало */
+    #catsWrap{
       display: none;
       width: 100%;
-      margin-top: 14px;          /* именно под текстом */
-      justify-content: flex-start; /* слева */
-      align-items: flex-start;
-      gap: 22px;
-      flex-wrap: nowrap;         /* одной линией */
-      overflow: visible;
+      margin-top: 14px; /* строго под текстом */
+      text-align: left;
     }
-    .cat {
+    #catsInline{
+      display: flex;
+      flex-wrap: nowrap;        /* НИКАКИХ переносов */
+      align-items: flex-end;    /* красиво: низ по одной линии */
+      gap: 22px;
+      transform-origin: left top;
+      will-change: transform;
+    }
+    .cat{
       display: none;
       object-fit: cover;
       border-radius: 14px;
@@ -266,20 +270,20 @@
 
 <body tabindex="0">
 
-  <!-- финальная фуллскрин картинка -->
   <div id="full">
     <img id="fullImg" alt="">
   </div>
 
-  <!-- Основной контент -->
   <div class="wrap" id="app" style="display:none;">
     <div id="text"></div>
 
-    <!-- котики под текстом (только слайд 30) -->
-    <div id="catsInline">
-      <img id="cat1" class="cat" alt="">
-      <img id="cat2" class="cat" alt="">
-      <img id="cat3" class="cat" alt="">
+    <!-- котики (только слайд 30) -->
+    <div id="catsWrap">
+      <div id="catsInline">
+        <img id="cat1" class="cat" alt="">
+        <img id="cat2" class="cat" alt="">
+        <img id="cat3" class="cat" alt="">
+      </div>
     </div>
 
     <img id="img" alt="">
@@ -344,7 +348,6 @@
 
   <div id="hint" style="display:none;"></div>
 
-  <!-- Экран пароля -->
   <div class="gate" id="gate">
     <div class="gate-card">
       <h1 class="gate-title">Введите пароль</h1>
@@ -373,19 +376,12 @@
     const screens = [
       { text: "Ого, а что это у нас такое?" },
       { text: "А это итоги 2025 года JMT/UA очереди!" },
-      { text: "Весь год мы были крутыми и самыми стойкими котиками",
-        image: CAT_A, imageW: 300, imageH: 300
-      },
+      { text: "Весь год мы были крутыми и самыми стойкими котиками", image: CAT_A, imageW: 300, imageH: 300 },
       { text: "Поэтому срочно собой гордитесь!" },
       { text: "Год был тяжёлый эмоционально, но благодаря поддержке друг друга мы выстояли" },
-      { text: "Вот вам, гадкие проблемы!",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKAMhY5WLb03jvdVkccdyReWqQR3rQeclLqxTT5EiR_A&s",
-        imageW: 400, imageH: 400
-      },
+      { text: "Вот вам, гадкие проблемы!", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKAMhY5WLb03jvdVkccdyReWqQR3rQeclLqxTT5EiR_A&s", imageW: 400, imageH: 400 },
       { text: "Итак, что у нас происходило в 2025 году?" },
-      { text: "Светличная называла вас котиками в разных вариациях 21 раз. В принципе дальше можно не листать, разве может быть статистика важнее этой?",
-        image: CAT_B, imageW: 400, imageH: 400
-      },
+      { text: "Светличная называла вас котиками в разных вариациях 21 раз. В принципе дальше можно не листать, разве может быть статистика важнее этой?", image: CAT_B, imageW: 400, imageH: 400 },
       { text: "Ладно, листаете всё-таки... ШТОШ" },
       { text: "Сначала наша Вавилонская башня распалась и собралась заново в трёх очередях. JMT объяла CIS-страны, Молдову и взяла под ручку украинскую очередь" },
       { text: "Мы обработали 323 602 тикета в JMT и UA очередях руками агентов. Знаете, за сколько часов?" },
@@ -423,19 +419,13 @@
       { text: "А самый короткий — 5 минуток. Правда, в ответ юзер обозвал агента ботом..." },
       { text: "В украинской очереди юзеры оценивали работу саппорта на 75%" },
       { text: "А в JMT очереди — на 65%. Но это потому что у нас значимо больше тикетов!" },
-      { text: "А ксат отдельно бота я не буду сюда включать, потому что меня это расстраивает",
-        image: CAT_C, imageW: 380, imageH: 510
-      },
+      { text: "А ксат отдельно бота я не буду сюда включать, потому что меня это расстраивает", image: CAT_C, imageW: 380, imageH: 510 },
       { text: "Трики натрикили в 4994 тикетах" },
-      { text: "Фрод... нет, не нафродил, а спас нас от мошейников в 6960 тикетах.",
-        image: "https://ibb.co/gMVVx00w",
-        imageW: 900, imageH: 500,
-        linkIfFails: "https://ibb.co/gMVVx00w"
-      },
+      { text: "Фрод... нет, не нафродил, а спас нас от мошейников в 6960 тикетах.", image: "https://ibb.co/gMVVx00w", imageW: 900, imageH: 500, linkIfFails: "https://ibb.co/gMVVx00w" },
       { text: "Мы запустили самостоятельный поиск заказов, благодаря чему у нас стало в 4 раза меньше тикетов по верификации (47к за первые полгода и 12к за вторые). А потом запустили рефанды баллами и теперь 15% рефандов проводим именно так." },
       { text: "Агенты на UGC-модерации ещё один год смотрели на всякое безобразие в течение 144 часов и разметили 28 491 единицу контента. И там показывали ни разу не котиков, ни разу" },
 
-      /* СЛАЙД 30 — котики ОДНИМ РЯДОМ ПОД ТЕКСТОМ */
+      /* СЛАЙД 30 — один ряд под текстом */
       {
         kind: "cats_inline",
         text: "Кстати о котиках",
@@ -450,10 +440,7 @@
       { text: "Я бы посчитала, сколько раз Дима мне показывал красивого любимого кота Тишку, но не могу, потому что когда мне показывают животных, у меня отключается мозг, айкью становится как у хлебушка и я могу издавать только неприличествующие леди звуки" },
       { text: "Дней, в которые я радовалась тому, какая классная у меня команда — 2109!" },
 
-      {
-        kind: "full",
-        src: "https://img.goodfon.ru/original/8770x6050/a/b5/feyerverk-salyut-serdce-nebo.jpg"
-      }
+      { kind: "full", src: "https://img.goodfon.ru/original/8770x6050/a/b5/feyerverk-salyut-serdce-nebo.jpg" }
     ];
 
     let index = 0;
@@ -476,7 +463,8 @@
     const fullEl = document.getElementById("full");
     const fullImg = document.getElementById("fullImg");
 
-    const catsInlineEl = document.getElementById("catsInline");
+    const catsWrap = document.getElementById("catsWrap");
+    const catsInline = document.getElementById("catsInline");
     const cat1 = document.getElementById("cat1");
     const cat2 = document.getElementById("cat2");
     const cat3 = document.getElementById("cat3");
@@ -492,7 +480,8 @@
     }
 
     function hideCatsInline() {
-      catsInlineEl.style.display = "none";
+      catsWrap.style.display = "none";
+      catsInline.style.transform = "scale(1)";
       for (const el of [cat1, cat2, cat3]) {
         el.style.display = "none";
         el.removeAttribute("src");
@@ -532,6 +521,14 @@
       document.getElementById("md_i3").src = board.md[2].img;
     }
 
+    function fitCatsRowToWidth() {
+      // Мы хотим 1 ряд ВСЕГДА. Если не помещается — уменьшаем scale.
+      const available = catsWrap.clientWidth;
+      const rowWidth = catsInline.scrollWidth; // реальная ширина ряда
+      const scale = Math.min(1, available / rowWidth);
+      catsInline.style.transform = `scale(${scale})`;
+    }
+
     function show() {
       clearTimers();
       hideFull();
@@ -550,16 +547,22 @@
       } else if (s.kind === "cats_inline") {
         textEl.textContent = s.text;
 
-        catsInlineEl.style.display = "flex";
-        // Скрыты по умолчанию, включаем по таймерам
+        catsWrap.style.display = "block";
+
+        // Загружаем и показываем по таймерам
         for (const c of s.cats) {
           const el = document.getElementById(c.target);
           el.src = c.src;
           el.style.display = "none";
           timers.push(setTimeout(() => {
             el.style.display = "block";
+            // после появления каждого котика пересчитываем масштаб
+            requestAnimationFrame(fitCatsRowToWidth);
           }, c.delayMs));
         }
+
+        // и первый расчёт (до появления — на всякий)
+        requestAnimationFrame(fitCatsRowToWidth);
       } else {
         textEl.textContent = s.text;
 
@@ -613,14 +616,12 @@
       }
     }
 
-    // Вход
     enterBtn.addEventListener("click", unlock);
     passEl.addEventListener("keydown", (e) => {
       const isEnter = e.key === "Enter" || e.code === "Enter" || e.code === "NumpadEnter";
       if (isEnter) { e.preventDefault(); unlock(); }
     });
 
-    // Навигация (только после входа)
     window.addEventListener("keydown", (e) => {
       if (!unlocked) return;
 
@@ -639,14 +640,19 @@
       if (isPrev) { e.preventDefault(); prev(); }
     });
 
-    // Клик — вперёд
     bodyEl.addEventListener("click", () => {
       if (!unlocked) return;
       bodyEl.focus();
       next();
     });
 
-    // Фокус сразу в поле пароля
+    // пересчёт масштаба при изменении размера окна (на случай ресайза)
+    window.addEventListener("resize", () => {
+      if (!unlocked) return;
+      const s = screens[index];
+      if (s && s.kind === "cats_inline") requestAnimationFrame(fitCatsRowToWidth);
+    });
+
     passEl.focus();
   </script>
 
