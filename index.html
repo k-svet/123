@@ -3,8 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Тексты + картинка</title>
+  <title>Итоги 2025 — JMT/UA</title>
   <style>
+    :root {
+      --overlay: 0.55;
+      --shadow: rgba(0,0,0,0.85);
+      --bg: url("https://9492.cdn.simplo7.net/static/9492/sku/tule-bordado-com-glitter-tule-com-glitter-vermelho-pesado--p-1630003801352.jpeg");
+    }
+
     html, body {
       height: 100%;
       margin: 0;
@@ -12,44 +18,147 @@
       color: #fff;
     }
 
-    /* ФОН + ЗАТЕМНЕНИЕ БЕЗ ПСЕВДОЭЛЕМЕНТОВ (НАДЁЖНО) */
+    /* ФОН + ЗАТЕМНЕНИЕ + ПОВОРОТ 180° */
     body {
       background:
-        linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-        url("https://onlinetkani.ru/image/catalog/!-Sokol/Pajetki/pajetki-0016.JPG");
+        linear-gradient(rgba(0,0,0,var(--overlay)), rgba(0,0,0,var(--overlay))),
+        var(--bg);
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      transform: rotate(180deg);
+      transform-origin: center;
 
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       outline: none;
+      overflow: hidden;
     }
+    /* Чтобы контент не перевернулся вместе с body */
+    body > * { transform: rotate(180deg); }
 
     .wrap {
       padding: 40px;
-      max-width: 1100px;
+      max-width: 1200px;
       width: 100%;
+      position: relative;
+      z-index: 1;
     }
 
     #text {
       font-size: 52px;
       line-height: 1.25;
-      margin-bottom: 24px;
-      /* чуть усилим читаемость */
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      margin-bottom: 22px;
+      text-shadow: 0 2px 10px var(--shadow);
+      white-space: pre-wrap;
     }
 
+    /* Обычная картинка снизу текста */
     #img {
       display: none;
-      width: 300px;
-      height: 300px;
       object-fit: cover;
       border-radius: 12px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.45);
       margin: 0 auto;
+    }
+
+    /* Спец-слайд 18: board */
+    #board {
+      display: none;
+      width: min(1200px, 96vw);
+      margin: 10px auto 0;
+      text-align: left;
+      position: relative;
+    }
+
+    .country {
+      width: min(900px, 96vw);
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 16px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      backdrop-filter: blur(2px);
+    }
+
+    .country h3 {
+      margin: 0 0 12px;
+      font-size: 26px;
+      font-weight: 700;
+      text-shadow: 0 2px 10px var(--shadow);
+    }
+
+    .items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .item {
+      display: grid;
+      gap: 8px;
+      justify-items: start;
+    }
+
+    .num {
+      font-size: 18px;
+      opacity: 0.95;
+      text-shadow: 0 2px 10px var(--shadow);
+    }
+
+    .thumb {
+      width: 140px;
+      height: 140px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.2);
+    }
+
+    .russia  { margin-left: 0; }
+    .ukraine { margin-left: 140px; margin-top: 18px; }
+    .moldova { margin-left: 280px; margin-top: 18px; }
+
+    /* Слайд 30: авто-котики */
+    #cats {
+      display: none;
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .cat {
+      position: absolute;
+      display: none;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.2);
+    }
+    /* 1) левый нижний угол */
+    #cat1 { left: 18px; bottom: 18px; width: 300px; height: 300px; }
+    /* 2) по центру, правее первой */
+    #cat2 { left: 52%; top: 48%; transform: translate(-50%, -50%); width: 400px; height: 400px; }
+    /* 3) правее второй */
+    #cat3 { left: 78%; top: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px; }
+
+    /* Фуллскрин картинка (финальный слайд) */
+    #full {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: #000;
+    }
+    #fullImg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     #hint {
@@ -60,7 +169,8 @@
       text-align: center;
       font-size: 14px;
       opacity: 0.75;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 10px var(--shadow);
+      z-index: 3;
     }
 
     /* Экран пароля */
@@ -71,8 +181,17 @@
       align-items: center;
       justify-content: center;
       padding: 24px;
-      background: rgba(0,0,0,0.55);
+      background:
+        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+        var(--bg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: rotate(180deg);
+      transform-origin: center;
+      z-index: 10;
     }
+    .gate > * { transform: rotate(180deg); }
 
     .gate-card {
       width: min(520px, 92vw);
@@ -88,7 +207,7 @@
       font-size: 22px;
       margin: 0 0 14px;
       opacity: 0.95;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 10px var(--shadow);
     }
 
     .gate-input {
@@ -119,35 +238,104 @@
       padding: 10px 14px;
       font-size: 14px;
     }
-
-    .gate-btn:hover {
-      background: rgba(255,255,255,0.18);
-    }
+    .gate-btn:hover { background: rgba(255,255,255,0.18); }
 
     .gate-error {
       margin-top: 10px;
       font-size: 14px;
       color: #ffb3b3;
       min-height: 18px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 10px var(--shadow);
     }
   </style>
 </head>
 
 <body tabindex="0">
 
+  <!-- финальная фуллскрин картинка -->
+  <div id="full">
+    <img id="fullImg" alt="">
+  </div>
+
+  <!-- слой для котиков на слайде 30 -->
+  <div id="cats">
+    <img id="cat1" class="cat" alt="">
+    <img id="cat2" class="cat" alt="">
+    <img id="cat3" class="cat" alt="">
+  </div>
+
   <!-- Основной контент -->
   <div class="wrap" id="app" style="display:none;">
     <div id="text"></div>
+
+    <!-- для обычных слайдов -->
     <img id="img" alt="">
+
+    <!-- для board-слайда (18) -->
+    <div id="board">
+      <div class="country russia">
+        <h3>В России</h3>
+        <div class="items">
+          <div class="item">
+            <div class="num" id="ru_n1"></div>
+            <img class="thumb" id="ru_i1" alt="">
+          </div>
+          <div class="item">
+            <div class="num" id="ru_n2"></div>
+            <img class="thumb" id="ru_i2" alt="">
+          </div>
+          <div class="item">
+            <div class="num" id="ru_n3"></div>
+            <img class="thumb" id="ru_i3" alt="">
+          </div>
+        </div>
+      </div>
+
+      <div class="country ukraine">
+        <h3>В Украине</h3>
+        <div class="items">
+          <div class="item">
+            <div class="num" id="ua_n1"></div>
+            <img class="thumb" id="ua_i1" alt="">
+          </div>
+          <div class="item">
+            <div class="num" id="ua_n2"></div>
+            <img class="thumb" id="ua_i2" alt="">
+          </div>
+          <div class="item">
+            <div class="num" id="ua_n3"></div>
+            <img class="thumb" id="ua_i3" alt="">
+          </div>
+        </div>
+      </div>
+
+      <div class="country moldova">
+        <h3>В Молдове</h3>
+        <div class="items">
+          <div class="item">
+            <div class="num" id="md_n1"></div>
+            <img class="thumb" id="md_i1" alt="">
+          </div>
+          <div class="item">
+            <div class="num" id="md_n2"></div>
+            <img class="thumb" id="md_i2" alt="">
+          </div>
+          <div class="item">
+            <div class="num" id="md_n3"></div>
+            <img class="thumb" id="md_i3" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div id="hint" style="display:none;"></div>
 
   <!-- Экран пароля -->
   <div class="gate" id="gate">
     <div class="gate-card">
       <h1 class="gate-title">Введите пароль</h1>
-      <input id="pass" class="gate-input" type="password" placeholder="Пароль">
+      <input id="pass" class="gate-input" type="password" placeholder="Пароль" autocomplete="current-password">
       <div class="gate-row">
         <button id="enterBtn" class="gate-btn">Войти</button>
       </div>
@@ -157,26 +345,102 @@
   </div>
 
   <script>
-    const PASSWORD = "queue2025";
+    const PASSWORD = "nikitochka";
 
     const screens = [
-      { text: "В 2025 русская очередь была клёвой" },
-      { text: "охуенной" },
-      { text: "пиздатой" },
-      { text: "обработала 10000000 тикетов" },
-      { text: "провела 50000 рефандов по качеству" },
-      { text: "и 1000 раз дёрнулась глазом" },
+      { text: "Ого, а что это у нас такое?" },
+      { text: "А это итоги 2025 года JMT/UA очереди!" },
+      { text: "Весь год мы были крутыми и самыми стойкими котиками",
+        image: "https://i.pinimg.com/236x/2b/39/10/2b3910477a915bff0f27ec06b0056442.jpg",
+        imageW: 300, imageH: 300
+      },
+      { text: "Поэтому срочно собой гордитесь!" },
+      { text: "Год был тяжёлый эмоционально, но благодаря поддержке друг друга мы выстояли" },
+      { text: "Вот вам, гадкие проблемы!",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKAMhY5WLb03jvdVkccdyReWqQR3rQeclLqxTT5EiR_A&s",
+        imageW: 400, imageH: 400
+      },
+      { text: "Итак, что у нас происходило в 2025 году?" },
+      { text: "Светличная называла вас котиками в разных вариациях 21 раз. В принципе дальше можно не листать, разве может быть статистика важнее этой?",
+        image: "https://img.freepik.com/free-vector/simple-vibing-cat-square-meme_742173-4493.jpg?semt=ais_hybrid&w=740&q=80",
+        imageW: 400, imageH: 400
+      },
+      { text: "Ладно, листаете всё-таки... ШТОШ" },
+      { text: "Сначала наша Вавилонская башня распалась и собралась заново в трёх очередях. JMT объяла CIS-страны, Молдову и взяла под ручку украинскую очередь" },
+      { text: "Мы обработали 323 602 тикета в JMT и UA очередях руками агентов. Знаете, за сколько часов?" },
+      { text: "Вот и не угадали. За 69 080 часов!" },
+      { text: "А потом мы познакомились с юзерами из других стран, спасали Польшу, грудью вставали ради Германии! И делали это минимум в 16 тысячах тикетов" },
+      { text: "Быстрее всего мы отвечали на тикеты 17 января — за 4 минутки" },
+      { text: "А дольше всего нас ждали 17 марта — в среднем мы приходили в тикет только через 17 часов" },
+      { text: "Мы успели потестить апсейл и заработали на ссылках агентов 4700 долларов GMV" },
+      { text: "А по ссылке в CSAT юзеры за всё время оформили 8837 заказов на сумму 38к долларов GMV!" },
+
       {
-        text: "Спасибо за внимание ✨",
-        image: "https://img.joomcdn.net/7cdf752bfa424a1bc94a9e8f85c30456b28e632c_original.jpeg"
+        kind: "board",
+        title: "В 2025 вот эти товары юзеры покупали в трёх наших самых тикетных странах:",
+        board: {
+          ru: [
+            { n: "30 827 заказов", img: "https://img.joomcdn.net/2c76264b81c3462dc63efe2ebbc61e7c87aac524_original.jpeg" },
+            { n: "29 289 заказов", img: "https://img.joomcdn.net/135b88227a3beb9e330fe09c21afc9fcca41c218_original.jpeg" },
+            { n: "27 533 заказов", img: "https://img.joomcdn.net/229ec634f5dd1788b37377bafbbc0fe27068c999_original.jpeg" }
+          ],
+          ua: [
+            { n: "— 2824 заказов", img: "https://img.joomcdn.net/e4b21d955c4682ad692e8437dc8992660ba303a0_original.jpeg" },
+            { n: "2422 заказов", img: "https://img.joomcdn.net/62650621a1ac28d51851362c29fb76b9a1b02bcb_original.jpeg" },
+            { n: "2212 заказов", img: "https://img.joomcdn.net/1a7c2c260b0932fa63b9a40020ceccff3288ff61_original.jpeg" }
+          ],
+          md: [
+            { n: "3313", img: "https://img.joomcdn.net/f136b95ddf36e81eec12f661b3b4aec46e859e6b_original.jpeg" },
+            { n: "1573 заказов", img: "https://img.joomcdn.net/62650621a1ac28d51851362c29fb76b9a1b02bcb_original.jpeg" },
+            { n: "1513 заказов", img: "https://img.joomcdn.net/561ddbdaabda59d57ee9ea06f31cc9c04091659e_original.jpeg" }
+          ]
+        }
+      },
+
+      { text: "А кроссовочника помните же, да? Не помните, наверное, но ладно. По MXC нам писали минимум 7124 раза за год" },
+      { text: "Сааамый долгий тикет за год длился 1947 часов (81 день) — бедный юзер ждал доставку из Индии. Но не дождался... и в итоге был рефанд" },
+      { text: "А самый короткий — 5 минуток. Правда, в ответ юзер обозвал агента ботом..." },
+      { text: "В украинской очереди юзеры оценивали работу саппорта на 75%" },
+      { text: "А в JMT очереди — на 65%. Но это потому что у нас значимо больше тикетов!" },
+      { text: "А ксат отдельно бота я не буду сюда включать, потому что меня это расстраивает",
+        image: "https://i.pinimg.com/736x/17/27/9a/17279ae8fc2e00b89f0e2e0405613cc3.jpg",
+        imageW: 380, imageH: 510
+      },
+      { text: "Трики натрикили в 4994 тикетах" },
+      { text: "Фрод... нет, не нафродил, а спас нас от мошейников в 6960 тикетах.",
+        image: "https://www.awesomescreenshot.com/image/58114070?key=f7f1f2d9a1ee4b2220e68f211804085b",
+        imageW: 900, imageH: 500
+      },
+      { text: "Мы запустили самостоятельный поиск заказов, благодаря чему у нас стало в 4 раза меньше тикетов по верификации (47к за первые полгода и 12к за вторые). А потом запустили рефанды баллами и теперь 15% рефандов проводим именно так." },
+      { text: "Агенты на UGC-модерации ещё один год смотрели на всякое безобразие в течение 144 часов и разметили 28 491 единицу контента. И там показывали ни разу не котиков, ни разу" },
+
+      {
+        kind: "cats",
+        text: "Кстати о котиках",
+        cats: [
+          { src: "https://i.pinimg.com/236x/2b/39/10/2b3910477a915bff0f27ec06b0056442.jpg", w: 300, h: 300, target: "cat1", delayMs: 2000 },
+          { src: "https://img.freepik.com/free-vector/simple-vibing-cat-square-meme_742173-4493.jpg?semt=ais_hybrid&w=740&q=80", w: 400, h: 400, target: "cat2", delayMs: 4000 },
+          { src: "https://i.pinimg.com/736x/17/27/9a/17279ae8fc2e00b89f0e2e0405613cc3.jpg", w: 500, h: 500, target: "cat3", delayMs: 6000 }
+        ]
+      },
+
+      { text: "В 2025 году в канале рандом пушистые помощники появлялись 24 раза (да, я пошла и посчитала). Но, если честно, этого преступно мало" },
+      { text: "Я бы посчитала, сколько раз Дима мне показывал красивого любимого кота Тишку, но не могу, потому что когда мне показывают животных, у меня отключается мозг, айкью становится как у хлебушка и я могу издавать только неприличествующие леди звуки" },
+      { text: "Дней, в которые я радовалась тому, какая классная у меня команда — 2109!" },
+
+      {
+        kind: "full",
+        src: "https://img.goodfon.ru/original/8770x6050/a/b5/feyerverk-salyut-serdce-nebo.jpg"
       }
     ];
 
     let index = 0;
     let unlocked = false;
+    let timers = [];
 
     const textEl = document.getElementById("text");
-    const imgEl = document.getElementById("img");
+    const imgEl  = document.getElementById("img");
+    const boardEl = document.getElementById("board");
     const hintEl = document.getElementById("hint");
     const bodyEl = document.body;
 
@@ -186,22 +450,107 @@
     const errEl = document.getElementById("err");
     const enterBtn = document.getElementById("enterBtn");
 
-    function show() {
-      const s = screens[index];
-      textEl.textContent = s.text;
+    const catsLayer = document.getElementById("cats");
+    const cat1 = document.getElementById("cat1");
+    const cat2 = document.getElementById("cat2");
+    const cat3 = document.getElementById("cat3");
 
-      if (s.image) {
-        imgEl.src = s.image;
-        imgEl.style.display = "block";
+    const fullEl = document.getElementById("full");
+    const fullImg = document.getElementById("fullImg");
+
+    function clearTimers() {
+      for (const t of timers) clearTimeout(t);
+      timers = [];
+    }
+
+    function hideCats() {
+      catsLayer.style.display = "none";
+      for (const el of [cat1, cat2, cat3]) {
+        el.style.display = "none";
+        el.removeAttribute("src");
+      }
+    }
+
+    function hideFull() {
+      fullEl.style.display = "none";
+      fullImg.removeAttribute("src");
+    }
+
+    function setBoard(board) {
+      // RU
+      document.getElementById("ru_n1").textContent = board.ru[0].n;
+      document.getElementById("ru_n2").textContent = board.ru[1].n;
+      document.getElementById("ru_n3").textContent = board.ru[2].n;
+      document.getElementById("ru_i1").src = board.ru[0].img;
+      document.getElementById("ru_i2").src = board.ru[1].img;
+      document.getElementById("ru_i3").src = board.ru[2].img;
+
+      // UA
+      document.getElementById("ua_n1").textContent = board.ua[0].n;
+      document.getElementById("ua_n2").textContent = board.ua[1].n;
+      document.getElementById("ua_n3").textContent = board.ua[2].n;
+      document.getElementById("ua_i1").src = board.ua[0].img;
+      document.getElementById("ua_i2").src = board.ua[1].img;
+      document.getElementById("ua_i3").src = board.ua[2].img;
+
+      // MD
+      document.getElementById("md_n1").textContent = board.md[0].n;
+      document.getElementById("md_n2").textContent = board.md[1].n;
+      document.getElementById("md_n3").textContent = board.md[2].n;
+      document.getElementById("md_i1").src = board.md[0].img;
+      document.getElementById("md_i2").src = board.md[1].img;
+      document.getElementById("md_i3").src = board.md[2].img;
+    }
+
+    function show() {
+      clearTimers();
+      hideCats();
+      hideFull();
+
+      const s = screens[index];
+
+      // reset modes
+      imgEl.style.display = "none";
+      imgEl.removeAttribute("src");
+      boardEl.style.display = "none";
+
+      // full-screen mode
+      if (s.kind === "full") {
+        textEl.textContent = "";
+        fullEl.style.display = "block";
+        fullImg.src = s.src;
+      } else if (s.kind === "board") {
+        textEl.textContent = s.title;
+        boardEl.style.display = "block";
+        setBoard(s.board);
+      } else if (s.kind === "cats") {
+        textEl.textContent = s.text;
+        catsLayer.style.display = "block";
+
+        // готовим картинки и показываем по таймерам
+        for (const c of s.cats) {
+          const el = document.getElementById(c.target);
+          el.style.width = c.w + "px";
+          el.style.height = c.h + "px";
+          el.src = c.src;
+          el.style.display = "none";
+
+          const t = setTimeout(() => {
+            el.style.display = "block";
+          }, c.delayMs);
+          timers.push(t);
+        }
       } else {
-        imgEl.removeAttribute("src");
-        imgEl.style.display = "none";
+        textEl.textContent = s.text;
+        if (s.image) {
+          imgEl.src = s.image;
+          imgEl.style.display = "block";
+          imgEl.style.width = (s.imageW || 300) + "px";
+          imgEl.style.height = (s.imageH || 300) + "px";
+        }
       }
 
-      hintEl.textContent =
-        index < screens.length - 1
-          ? "Нажми Enter или кликни"
-          : "Нажми Enter или кликни, чтобы начать заново";
+      hintEl.textContent = `← назад (Backspace/←) • вперёд (Enter/клик) • ${index + 1}/${screens.length}`;
     }
 
     function next() {
@@ -210,8 +559,14 @@
       show();
     }
 
+    function prev() {
+      if (!unlocked) return;
+      index = (index > 0) ? index - 1 : screens.length - 1;
+      show();
+    }
+
     function unlock() {
-      if (passEl.value === PASSWORD) {
+      if ((passEl.value || "") === PASSWORD) {
         unlocked = true;
         gateEl.style.display = "none";
         appEl.style.display = "block";
@@ -226,20 +581,32 @@
       }
     }
 
+    // Вход
     enterBtn.addEventListener("click", unlock);
-    passEl.addEventListener("keydown", e => {
-      if (e.key === "Enter") { e.preventDefault(); unlock(); }
+    passEl.addEventListener("keydown", (e) => {
+      const isEnter = e.key === "Enter" || e.code === "Enter" || e.code === "NumpadEnter";
+      if (isEnter) { e.preventDefault(); unlock(); }
     });
 
-    window.addEventListener("keydown", e => {
-      if (e.key === "Enter") { e.preventDefault(); next(); }
+    // Навигация
+    window.addEventListener("keydown", (e) => {
+      const key = e.key;
+      const code = e.code;
+
+      const isNext = key === "Enter" || code === "Enter" || code === "NumpadEnter";
+      const isPrev = key === "Backspace" || code === "Backspace" || key === "ArrowLeft" || code === "ArrowLeft";
+
+      if (isNext) { e.preventDefault(); next(); }
+      if (isPrev) { e.preventDefault(); prev(); }
     });
 
+    // Клик — всегда вперёд (как раньше)
     bodyEl.addEventListener("click", () => {
       bodyEl.focus();
       next();
     });
 
+    // Фокус сразу в поле пароля
     passEl.focus();
   </script>
 
